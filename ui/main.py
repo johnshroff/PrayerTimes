@@ -33,15 +33,15 @@ class Window(QtGui.QMainWindow):
         label.setPixmap(pixmap)
 
     def CreateButtons(self):
-        self.btnLocation = CustomIconButton(self, 300, 210, 'map-location.png')
+        self.btnLocation = CustomIconButton(self, 270, 210, 'map-location.png')
         self.btnLocation.SetClick(self.ChangeLocation)
 
-        self.btnWifi = CustomIconButton(self, 430, 210, 'wifi.png')
+        self.btnWifi = CustomIconButton(self, 380, 210, 'wifi.png')
         self.btnWifi.SetClick(self.ChangeWifi)
 
-        self.btnSettings = CustomIconButton(self, 560, 210, 'settings-6.png')
+        self.btnSettings = CustomIconButton(self, 490, 210, 'settings-6.png')
         self.btnSettings.SetClick(self.ChangeSettings)
-
+        
     def ChangeLocation(self):
         self.LocationWindow = CityStateForm()
         self.LocationWindow.OnSave.connect(self.Clock.Refresh)
@@ -51,8 +51,9 @@ class Window(QtGui.QMainWindow):
 
     def ChangeSettings(self):
         self.SettingsWindow = SettingsForm()
-        self.SettingsWindow.OnSave.connect(self.Clock.Refresh)
-
+        self.SettingsWindow.OnSave.connect(self.Clock.Refresh)        
+    
+    
 class CityStateForm(CustomForm):
     
     def __init__(self):        
