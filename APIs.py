@@ -11,20 +11,20 @@ class Aladhan:
         response = req.json()
         return response['data']['timings']
 
-class GoogleMaps:
-    URL = 'https://maps.googleapis.com/maps/api/geocode/json?'
+class Geocode:
+    URL = 'https://us1.locationiq.com/v1/search.php?'
+    API_KEY = '29bf3bd4a56ae5'
 
     @staticmethod
     def GetCoordsByAddress(address):
-        params = { 'address' : address }
-        url = GoogleMaps.URL + urllib.parse.urlencode(params)
+        params = {'key': Geocode.API_KEY, 'q': address, 'format': 'json'}
+        url = Geocode.URL + urllib.parse.urlencode(params)
         req = requests.get(url)
         response = req.json()
-
-        if (response['status'] == 'ZERO_RESULTS'):
+        if type(response) is not list:
             return False
         else:
-            return response['results'][0]['geometry']['location']
+            return {'lat': response[0]['lat'], 'lon': response[0]['lon']}
 
 class WPA:
     

@@ -1,11 +1,11 @@
-import os, sys, subprocess, datetime
+import os, sys, subprocess, datetime, math
 sys.path.append('..')
 from PyQt4 import QtGui, QtCore
 from Models import TimesModel
 
 class CustomIconButton(QtGui.QPushButton):
 
-    ICON_PATH = '/home/pi/PrayerTimes/ui/icons/'
+    ICON_PATH = '../assets/icons/'
     
     def __init__(self, parent, left, top, icon):
         super(QtGui.QPushButton, self).__init__('', parent)

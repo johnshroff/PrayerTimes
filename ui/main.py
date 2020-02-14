@@ -1,9 +1,10 @@
 import os, sys, subprocess
-sys.path.append('/home/pi/PrayerTimes')
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from Models import Model, CityStateModel, TimesModel, MethodModel
-from APIs import Aladhan, GoogleMaps, WPA
+from APIs import Aladhan, Geocode, WPA
 from PyQt4 import QtGui, QtCore
 from Widgets import CustomIconButton, CustomForm, AdhanCountdownTimer
+import git
 
 class Window(QtGui.QMainWindow):
 
@@ -24,7 +25,7 @@ class Window(QtGui.QMainWindow):
         self.Clock = AdhanCountdownTimer(self, 475, 110)
 
     def CreateImage(self):
-        pixmap = QtGui.QPixmap('/home/pi/PrayerTimes/ui/mosque.jpg')
+        pixmap = QtGui.QPixmap('../assets/mosque.jpg')
         pixmap.scaled(self.size())
         
         label = QtGui.QLabel(self)
@@ -41,6 +42,9 @@ class Window(QtGui.QMainWindow):
 
         self.btnSettings = CustomIconButton(self, 490, 210, 'settings-6.png')
         self.btnSettings.SetClick(self.ChangeSettings)
+
+        self.btnUpdate = CustomIconButton(self, 600, 210, 'download.png')
+        self.btnUpdate.SetClick(self.UpdateApp)
         
     def ChangeLocation(self):
         self.LocationWindow = CityStateForm()
@@ -51,7 +55,16 @@ class Window(QtGui.QMainWindow):
 
     def ChangeSettings(self):
         self.SettingsWindow = SettingsForm()
-        self.SettingsWindow.OnSave.connect(self.Clock.Refresh)        
+        self.SettingsWindow.OnSave.connect(self.Clock.Refresh)
+
+    def UpdateApp(self):
+        g = git.cmd.Git('../')
+        result = g.pull()
+        if result == 'Already up to date.':
+            QtGui.QMessageBox.warning(self, 'NO UPDATES', 'The application is already up to date')
+        else:
+            os.execl(sys.executable, sys.executable, *sys.argv)
+
     
     
 class CityStateForm(CustomForm):
@@ -72,7 +85,7 @@ class CityStateForm(CustomForm):
 
     def Validation(self):
         address = self.Fields['city'].displayText() + ', ' + self.Fields['state'].displayText()
-        coords = GoogleMaps.GetCoordsByAddress(address)
+        coords = Geocode.GetCoordsByAddress(address)
         if (coords is False):
             QtGui.QMessageBox.information(self, 'ERROR', 'City and State not found.')
             return
@@ -80,7 +93,7 @@ class CityStateForm(CustomForm):
 
     def Save(self, coords):
         method = MethodModel()
-        newTimes = Aladhan.GetTimes(coords['lat'], coords['lng'], method.GetValue('method'))        
+        newTimes = Aladhan.GetTimes(coords['lat'], coords['lon'], method.GetValue('method'))
         times = TimesModel()
         times.Load(newTimes)
         times.Save()        
@@ -197,8 +210,8 @@ class SettingsForm(CustomForm):
     def AfterSave(self):
         cs = CityStateModel()
         address = cs.GetValue('city') + ', ' + cs.GetValue('state')
-        coords = GoogleMaps.GetCoordsByAddress(address)
-        newTimes = Aladhan.GetTimes(coords['lat'], coords['lng'], self.Method)        
+        coords = Geocode.GetCoordsByAddress(address)
+        newTimes = Aladhan.GetTimes(coords['lat'], coords['lon'], self.Method)
         times = TimesModel()
         times.Load(newTimes)
         times.Save()

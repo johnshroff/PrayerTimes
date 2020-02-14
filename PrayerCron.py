@@ -1,8 +1,10 @@
 from datetime import datetime, time
 from Models import Model, TimesModel, LockModel
 import pygame
+import os
 import sys
-
+dir_path = os.path.dirname(os.path.realpath(__file__))
+os.chdir(dir_path + '/ui')
 lock = LockModel()
 if not lock.GetValue('lock'):
     now = datetime.now().time()
@@ -16,7 +18,7 @@ if not lock.GetValue('lock'):
             
             pygame.init()
             pygame.mixer.init()
-            pygame.mixer.music.load('/home/pi/PrayerTimes/Abdul-Basit.mp3')
+            pygame.mixer.music.load('../assets/Abdul-Basit.mp3')
             pygame.mixer.music.play()
             
             while pygame.mixer.music.get_busy(): 

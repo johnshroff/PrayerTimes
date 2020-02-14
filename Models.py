@@ -1,6 +1,6 @@
 import json
 class Model():
-    DATA_DIR = '/home/pi/PrayerTimes/data/'
+    DATA_DIR = '../data/'
     FILE = 'abstract'
     Data = None
 
