@@ -1,10 +1,7 @@
 from datetime import datetime, time
-from Models import Model, TimesModel, LockModel
+from Models import TimesModel, LockModel
 import pygame
-import os
 import sys
-dir_path = os.path.dirname(os.path.realpath(__file__))
-os.chdir(dir_path + '/ui')
 lock = LockModel()
 if not lock.GetValue('lock'):
     now = datetime.now().time()

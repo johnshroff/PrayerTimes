@@ -1,3 +1,4 @@
+from env import ROOT_APPLICATION_PATH
 import os, sys, subprocess, datetime, math
 sys.path.append('..')
 from PyQt4 import QtGui, QtCore
@@ -5,7 +6,7 @@ from Models import TimesModel
 
 class CustomIconButton(QtGui.QPushButton):
 
-    ICON_PATH = '../assets/icons/'
+    ICON_PATH = ROOT_APPLICATION_PATH + '/assets/icons/'
     
     def __init__(self, parent, left, top, icon):
         super(QtGui.QPushButton, self).__init__('', parent)
@@ -230,7 +231,7 @@ class Return(QtGui.QPushButton):
         self.Parent.ReturnFunction()
 
 class BackSpace(QtGui.QPushButton):
-    ICON_PATH = '/home/pi/PrayerTimes/ui/icons/'
+    ICON_PATH = ROOT_APPLICATION_PATH + '/assets/icons/'
     
     def __init__(self, parent, left, top):
         super(QtGui.QPushButton, self).__init__('', parent)

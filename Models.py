@@ -1,6 +1,7 @@
+from ui.env import ROOT_APPLICATION_PATH
 import json
 class Model():
-    DATA_DIR = '../data/'
+    DATA_DIR = ROOT_APPLICATION_PATH + '/data/'
     FILE = 'abstract'
     Data = None
 

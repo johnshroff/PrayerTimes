@@ -1,5 +1,6 @@
-import os, sys, subprocess
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+from env import ROOT_APPLICATION_PATH
+import os, sys
+sys.path.append(ROOT_APPLICATION_PATH)
 from Models import Model, CityStateModel, TimesModel, MethodModel
 from APIs import Aladhan, Geocode, WPA
 from PyQt4 import QtGui, QtCore
@@ -25,7 +26,7 @@ class Window(QtGui.QMainWindow):
         self.Clock = AdhanCountdownTimer(self, 475, 110)
 
     def CreateImage(self):
-        pixmap = QtGui.QPixmap('../assets/mosque.jpg')
+        pixmap = QtGui.QPixmap(ROOT_APPLICATION_PATH + '/assets/mosque.jpg')
         pixmap.scaled(self.size())
         
         label = QtGui.QLabel(self)
@@ -58,7 +59,7 @@ class Window(QtGui.QMainWindow):
         self.SettingsWindow.OnSave.connect(self.Clock.Refresh)
 
     def UpdateApp(self):
-        g = git.cmd.Git('../')
+        g = git.cmd.Git(ROOT_APPLICATION_PATH)
         result = g.pull()
         if result == 'Already up to date.':
             QtGui.QMessageBox.warning(self, 'NO UPDATES', 'The application is already up to date')
