@@ -6,6 +6,7 @@ from APIs import Aladhan, Geocode, WPA
 from PyQt4 import QtGui, QtCore
 from Widgets import CustomIconButton, CustomForm, AdhanCountdownTimer
 import git
+from Lib import Lib
 
 class Window(QtGui.QMainWindow):
 
@@ -93,8 +94,16 @@ class CityStateForm(CustomForm):
         self.Save(coords)
 
     def Save(self, coords):
+        if Lib.internet() is not True:
+            QtGui.QMessageBox.warning(self, 'ERROR', 'You must be connected to the internet to perform this action')
+            return
+
         method = MethodModel()
         newTimes = Aladhan.GetTimes(coords['lat'], coords['lon'], method.GetValue('method'))
+        if type(newTimes) is not dict:
+            QtGui.QMessageBox.warning(self, 'ERROR', 'Request for new coordinates failed')
+            return
+
         times = TimesModel()
         times.Load(newTimes)
         times.Save()        
