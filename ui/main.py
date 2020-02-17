@@ -26,6 +26,15 @@ class Window(QtGui.QMainWindow):
         self.Label.setGeometry(300, 50, 200, 190)
         self.Clock = AdhanCountdownTimer(self, 475, 110)
 
+        self.InfoLabel = QtGui.QLabel(self)
+        self.InfoLabel.setText('Prayer:' )
+        self.InfoLabel.setGeometry(275, 250, 400, 190)
+        self.InfoLabel.setFont(QtGui.QFont("Times", 18, QtGui.QFont.Bold))
+
+        def OnTimerTick(nextPrayer, timeLeft):
+            self.InfoLabel.setText('Prayer: ' + nextPrayer)
+        self.Clock.OnTick = OnTimerTick
+
     def CreateImage(self):
         pixmap = QtGui.QPixmap(ROOT_APPLICATION_PATH + '/assets/mosque.jpg')
         pixmap.scaled(self.size())

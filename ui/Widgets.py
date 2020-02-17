@@ -81,6 +81,8 @@ class CustomTextBox(QtGui.QLineEdit):
 
 class AdhanCountdownTimer(QtGui.QLCDNumber):
 
+    OnTick = None
+
     def __init__(self, parent, left, top):
         super(QtGui.QLCDNumber, self).__init__(parent)
         self.setDigitCount(8)
@@ -98,8 +100,13 @@ class AdhanCountdownTimer(QtGui.QLCDNumber):
             if (self.PrayerDate(times[key]) > self.CurrentDate()):                
                 if (nextPrayer is None or self.PrayerDateOrdered(times[key]) < self.PrayerDateOrdered(times[nextPrayer])):
                     nextPrayer = key
+
         timeLeft = self.PrayerDate(self.Times.GetValue(nextPrayer)) - self.CurrentDate()
         timeLeft = timeLeft - datetime.timedelta(microseconds=timeLeft.microseconds)
+
+        if callable(self.OnTick):
+            self.OnTick(nextPrayer, timeLeft)
+
         return str(timeLeft)
 
     def CurrentDate(self):
