@@ -1,5 +1,5 @@
 from env import ROOT_APPLICATION_PATH
-import os, sys, subprocess, datetime, math
+import sys, datetime
 sys.path.append('..')
 from PyQt4 import QtGui, QtCore
 from Models import TimesModel
@@ -95,11 +95,17 @@ class AdhanCountdownTimer(QtGui.QLCDNumber):
 
     def GetNextPrayerTime(self):
         nextPrayer = None
+        earliest = None
         times = self.Times.GetData()
         for key in times:
+            if earliest is None or self.PrayerDateOrdered(times[key]) < self.PrayerDateOrdered(times[earliest]):
+                earliest = key
             if (self.PrayerDate(times[key]) > self.CurrentDate()):                
                 if (nextPrayer is None or self.PrayerDateOrdered(times[key]) < self.PrayerDateOrdered(times[nextPrayer])):
                     nextPrayer = key
+
+        if nextPrayer is None:
+            nextPrayer = earliest
 
         timeLeft = self.PrayerDate(self.Times.GetValue(nextPrayer)) - self.CurrentDate()
         timeLeft = timeLeft - datetime.timedelta(microseconds=timeLeft.microseconds)

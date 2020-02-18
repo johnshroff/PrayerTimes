@@ -20,7 +20,10 @@ class Model():
         self.Data[key] = value
 
     def GetValue(self, key):
-        return self.Data[key]
+        if key in self.Data.keys():
+            return self.Data[key]
+        else:
+            return None
 
     def Load(self, data):
         self.Data = data
