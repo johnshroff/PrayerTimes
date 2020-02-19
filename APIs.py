@@ -1,12 +1,13 @@
 import requests, json, urllib, os, sys, subprocess, time
 
 class Aladhan:
-    URL = 'http://api.aladhan.com/timings/1398332113?'
+    URL = 'http://api.aladhan.com/timings/'
 
     @staticmethod
     def GetTimes(latitude, longitude, method = '1', timezone = 'UTC'):
         params = { 'latitude' : latitude, 'longitude' : longitude, 'timezonestring' : timezone, 'method' : method }
-        url = Aladhan.URL + urllib.parse.urlencode(params)
+        timestamp = str(int(time.time()))
+        url = Aladhan.URL + timestamp + '?' + urllib.parse.urlencode(params)
         req = requests.get(url)
         response = req.json()
         return response['data']['timings']
