@@ -10,7 +10,14 @@ class Aladhan:
         url = Aladhan.URL + timestamp + '?' + urllib.parse.urlencode(params)
         req = requests.get(url)
         response = req.json()
-        return response['data']['timings']
+        prayers = {
+            'Fajr': response['data']['timings']['Fajr'],
+            'Dhuhr': response['data']['timings']['Dhuhr'],
+            'Asr': response['data']['timings']['Asr'],
+            'Maghrib': response['data']['timings']['Magrhib'],
+            'Isha': response['data']['timings']['Isha'],
+        }
+        return prayers
 
 class Geocode:
     URL = 'https://us1.locationiq.com/v1/search.php?'
