@@ -15,7 +15,7 @@ class Aladhan:
             'Dhuhr': response['data']['timings']['Dhuhr'],
             'Asr': response['data']['timings']['Asr'],
             'Maghrib': response['data']['timings']['Magrhib'],
-            'Isha': response['data']['timings']['Isha'],
+            'Isha': response['data']['timings']['Isha']
         }
         return prayers
 
