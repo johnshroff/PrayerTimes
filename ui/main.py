@@ -71,8 +71,7 @@ class Window(QtGui.QMainWindow):
     def UpdateApp(self):
         g = git.cmd.Git(ROOT_APPLICATION_PATH)
         result = g.pull()
-        print("GIT PULL RESULT: " + result)
-        if result == 'Already up to date.':
+        if result in ['Already up to date.', 'Already up-to-date.']:
             QtGui.QMessageBox.warning(self, 'NO UPDATES', 'The application is already up to date')
         else:
             os.execl(sys.executable, sys.executable, *sys.argv)
